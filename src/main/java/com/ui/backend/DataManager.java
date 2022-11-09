@@ -29,7 +29,6 @@ public class DataManager {
     public static ArrayList<String> IDs=new ArrayList<>();
 
 
-
     public static String sendGetRequest(String url,Map<String, String> params) {
 
         HttpURLConnection con = null;
@@ -148,44 +147,30 @@ public class DataManager {
         params.put("start","2022-10-10T08:00:35");
         params.put("end","2022-11-07T08:00:35");
         String ret = sendGetRequest(url, params);
-
+//将返回的是数据变为json格式
         JSONObject jsonObject = JSONObject.parseObject(ret);
 
-
-
         if(jsonObject.getString("errno").equals("0")){
-
-//            System.out.println(jsonObject);
             String data=jsonObject.getString("data");
-//            System.out.println(data);
 
             JSONObject data_json=JSONObject.parseObject(data);
             String count=data_json.getString("count");
 
             String dataSteams=data_json.getString("datastreams");
-//            System.out.println(dataSteams);
 
             JSONArray x=data_json.getJSONArray("datastreams");
-//            System.out.println(x);
-//            System.out.println("-----");
 
 
             for(int i=0;i<x.size();i++){
                 JSONObject ob=(JSONObject)x.get(i);
-//                System.out.println(ob);
                 String dataPoints=ob.getString("datapoints");
                 String id=ob.getString("id");
-//                System.out.println("id "+id);
-//                System.out.println("datapoints "+dataPoints);
                 SaveJson(dataPoints,id);
                 IDs.add(id);
-//                System.out.println("!!!!!!!!!!");
-
                 ArrayList<datapoint> datapoints = (ArrayList<datapoint>) JSON.parseArray(IO.read("Files/"+id+".json"),datapoint.class);
                 for(datapoint xx:datapoints){
                     xx.setId(id);
                 }
-
                 lists.add(datapoints);
             }
 
