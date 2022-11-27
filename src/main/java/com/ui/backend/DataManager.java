@@ -136,20 +136,34 @@ public class DataManager {
 
     }
 
-
-    public DataManager() throws IOException {
-
-        //url中的35379643替换为自己组对应的设备ID(登录OneNet控制台查看）
-        String url ="http://api.heclouds.com/devices/35379866/datapoints";
-
-        //paras的名称和类型查看文档
-        Map<String, String> params = new HashMap<>();
+    public void getHum(String url,Map<String,String> params) throws IOException {
         params.put("start","2022-10-10T08:00:35");
-        params.put("end","2022-11-07T08:00:35");
+        params.put("end","2022-12-07T08:00:35");
+        params.put("datastream_id","hum1");
         String ret = sendGetRequest(url, params);
-//将返回的是数据变为json格式
-        JSONObject jsonObject = JSONObject.parseObject(ret);
+        DataOperation(ret);
 
+    }
+
+    public void getTemp(String url,Map<String,String> params) throws IOException {
+        params.put("start","2022-10-10T08:00:35");
+        params.put("end","2022-12-07T08:00:35");
+        params.put("datastream_id","temp1");
+        String ret = sendGetRequest(url, params);
+        DataOperation(ret);
+
+    }
+    public void getRFID(String url,Map<String,String> params) throws IOException {
+        params.put("start","2022-10-10T08:00:35");
+        params.put("end","2022-12-07T08:00:35");
+        params.put("datastream_id","RFID");
+        String ret = sendGetRequest(url, params);
+        DataOperation(ret);
+
+    }
+
+    public synchronized void DataOperation(String ret) throws IOException {
+        JSONObject jsonObject = JSONObject.parseObject(ret);
         if(jsonObject.getString("errno").equals("0")){
             String data=jsonObject.getString("data");
 
@@ -194,6 +208,69 @@ public class DataManager {
         }else{
             System.out.println("数据出错");
         }
+    }
+    public DataManager() throws IOException {
+
+        //url中的35379643替换为自己组对应的设备ID(登录OneNet控制台查看）
+        String url ="http://api.heclouds.com/devices/35379866/datapoints";
+
+        //paras的名称和类型查看文档
+        Map<String, String> params = new HashMap<>();
+//        params.put("start","2022-10-10T08:00:35");
+//        params.put("end","2022-12-07T08:00:35");
+
+        getHum(url,params);
+        getTemp(url,params);
+        getRFID(url,params);
+
+//        String ret = sendGetRequest(url, params);
+//将返回的是数据变为json格式
+//        JSONObject jsonObject = JSONObject.parseObject(ret);
+
+//        if(jsonObject.getString("errno").equals("0")){
+//            String data=jsonObject.getString("data");
+//
+//            JSONObject data_json=JSONObject.parseObject(data);
+//            String count=data_json.getString("count");
+//
+//            String dataSteams=data_json.getString("datastreams");
+//
+//            JSONArray x=data_json.getJSONArray("datastreams");
+//
+//
+//            for(int i=0;i<x.size();i++){
+//                JSONObject ob=(JSONObject)x.get(i);
+//                String dataPoints=ob.getString("datapoints");
+//                String id=ob.getString("id");
+//                SaveJson(dataPoints,id);
+//                IDs.add(id);
+//                ArrayList<datapoint> datapoints = (ArrayList<datapoint>) JSON.parseArray(IO.read("Files/"+id+".json"),datapoint.class);
+//                for(datapoint xx:datapoints){
+//                    xx.setId(id);
+//                }
+//                lists.add(datapoints);
+//            }
+//
+////            System.out.println("遍历");
+//            for(ArrayList<datapoint> xx:lists){
+//                for(datapoint xxx: xx){
+//                    System.out.println(xxx.getAt());
+//                    System.out.println(xxx.getId());
+//                    System.out.println(xxx.getValue());
+//
+//                }
+//            }
+//
+//
+//
+//            System.out.println("数据无错误");
+//            System.out.println("共读取"+count+"条数据");
+//            System.out.println("datapoints ID: "+IDs.toString());
+//
+//            SaveJson(ret,"data_all");
+//        }else{
+//            System.out.println("数据出错");
+//        }
     }
 
     public static void main(String[] args) throws IOException {

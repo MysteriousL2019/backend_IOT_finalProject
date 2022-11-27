@@ -40,7 +40,6 @@ public class IO {
         courseFile = directory.getCanonicalPath();
         System.out.println(courseFile);
 
-
         File file = new File(courseFile +"/"+ fileName);
         PrintStream ps = new PrintStream(new FileOutputStream(file));
         ps.println(str);

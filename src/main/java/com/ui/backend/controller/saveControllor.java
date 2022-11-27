@@ -36,7 +36,6 @@ public class saveControllor {
         if(queryInfo.getDate()!=null&& queryInfo.getId()!=null){
             for(ArrayList<datapoint> xx:tmp){
                 for(datapoint xxx: xx){
-
                     String Date=xxx.getAt().substring(0,10);
                     String Time=xxx.getAt().substring(11,19);
                     //在其中

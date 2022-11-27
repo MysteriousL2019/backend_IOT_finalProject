@@ -12,8 +12,6 @@ public class datapoint {
     private String value;
     private String Id;
 
-
-
     public String getAt() {
         return at;
     }
